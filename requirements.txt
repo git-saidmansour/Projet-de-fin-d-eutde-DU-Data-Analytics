@@ -1,0 +1,15 @@
+requests>=2.31
+python-dotenv>=1.0
+pandas>=2.2
+tqdm>=4.66
+
+scikit-learn>=1.4
+xgboost>=2.0
+lightgbm>=4.3
+imbalanced-learn>=0.12
+shap>=0.45
+
+streamlit>=1.32
+plotly>=5.20
+
+pytest>=8.0
