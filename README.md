@@ -31,8 +31,8 @@ data/
 src/
 ├── collect/      # scripts de collecte NVD, EPSS, KEV
 ├── features/     # feature engineering
-├── models/       # entraînement, évaluation
-└── dashboard/    # app Streamlit
+├── models/       # entraînement, évaluation, interprétabilité SHAP
+└── dashboard/    # API FastAPI + app Streamlit
 notebooks/        # exploration EDA
 tests/
 ```
@@ -76,9 +76,19 @@ python -m src.models.train
 
 XGBoost offre le meilleur compromis global (PR-AUC et F1 les plus élevés) et dépasse la baseline EPSS sur toutes les métriques.
 
+## Dashboard & API
+
+- **API FastAPI** (`src/dashboard/api.py`) : charge le pipeline XGBoost et la table de features une fois au démarrage, précalcule les probabilités prédites. Endpoints : `GET /cves` (liste filtrée/triée par risque), `GET /cves/{cve_id}` (prédiction + explication SHAP + description), `GET /meta/*`, `GET /health`.
+- **Dashboard Streamlit** (`src/dashboard/app.py`) : recherche par CVE-ID (prédiction, score de confiance, graphique SHAP), tableau des CVE récentes triées par risque avec filtres (vendor, CWE, plage CVSS), comparaison score ML vs EPSS. Consomme l'API en HTTP (variable d'env `API_URL`, défaut `http://localhost:8000`).
+
+```bash
+python -m uvicorn src.dashboard.api:app --port 8000        # API
+API_URL=http://localhost:8000 streamlit run src/dashboard/app.py  # Dashboard
+```
+
 ## Métriques de succès
 
 - ✅ AUC-ROC > 0.80 sur le test set (tous les modèles)
 - ✅ Le modèle bat EPSS seul comme baseline (XGBoost)
-- ⬜ Dashboard fonctionnel avec prédiction en temps réel sur un CVE-ID saisi
+- ✅ Dashboard fonctionnel avec prédiction en temps réel sur un CVE-ID saisi
 - ⬜ Rapport d'analyse rédigé (méthodologie, résultats, limites)
