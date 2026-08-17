@@ -112,7 +112,10 @@ def train_and_evaluate(train_df: pd.DataFrame, test_df: pd.DataFrame, save_dir=N
                 mlflow.log_params(_loggable_params(classifier))
                 mlflow.log_metrics({k: v for k, v in results[name].items() if k != "beats_epss_baseline"})
                 mlflow.log_metric("beats_epss_baseline", int(results[name]["beats_epss_baseline"]))
-                mlflow.sklearn.log_model(pipeline, name="model")
+                # skops (mlflow's default sklearn serializer) rejects numpy.dtype as an
+                # "untrusted type" inside our ColumnTransformer; cloudpickle is fine since
+                # these are our own locally-trained models, not third-party artifacts.
+                mlflow.sklearn.log_model(pipeline, name="model", serialization_format="cloudpickle")
 
     return results
 
