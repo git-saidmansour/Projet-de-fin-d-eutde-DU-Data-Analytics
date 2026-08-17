@@ -86,9 +86,18 @@ python -m uvicorn src.dashboard.api:app --port 8000        # API
 API_URL=http://localhost:8000 streamlit run src/dashboard/app.py  # Dashboard
 ```
 
+### Déploiement (production)
+
+Conteneurisé (`docker/`, `docker-compose.yml`) et déployé sur un VPS derrière nginx, routé par chemin (pas de sous-domaine disponible) sur le domaine d'un portfolio existant :
+
+- Dashboard : https://matane-mansour.com/cve-predictor/
+- API : https://matane-mansour.com/cve-predictor/api/
+
+Images légères (`requirements-serve.txt`), données montées en volume (`data/processed/`, pas la base SQLite complète de 2,4 Go) plutôt que copiées dans l'image.
+
 ## Métriques de succès
 
 - ✅ AUC-ROC > 0.80 sur le test set (tous les modèles)
 - ✅ Le modèle bat EPSS seul comme baseline (XGBoost)
 - ✅ Dashboard fonctionnel avec prédiction en temps réel sur un CVE-ID saisi
-- ⬜ Rapport d'analyse rédigé (méthodologie, résultats, limites)
+- ✅ Rapport d'analyse rédigé (méthodologie, résultats, limites) — [`docs/rapport.docx`](docs/rapport.docx)
