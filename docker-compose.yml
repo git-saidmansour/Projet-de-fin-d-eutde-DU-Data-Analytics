@@ -1,0 +1,25 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/api.Dockerfile
+    volumes:
+      - ./data/processed:/app/data/processed:ro
+    ports:
+      - "127.0.0.1:8001:8000"
+    environment:
+      - API_ROOT_PATH=/cve-predictor/api
+    restart: unless-stopped
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: docker/dashboard.Dockerfile
+    environment:
+      - API_URL=http://api:8000
+      - STREAMLIT_SERVER_BASE_URL_PATH=/cve-predictor
+    depends_on:
+      - api
+    ports:
+      - "127.0.0.1:8501:8501"
+    restart: unless-stopped
