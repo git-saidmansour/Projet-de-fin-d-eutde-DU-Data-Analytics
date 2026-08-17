@@ -11,6 +11,7 @@ DATA_DIR = BASE_DIR / "data"
 RAW_DIR = DATA_DIR / "raw"
 PROCESSED_DIR = DATA_DIR / "processed"
 DB_PATH = DATA_DIR / "cve.db"
+MLRUNS_DIR = BASE_DIR / "mlruns"
 
 NVD_API_KEY = os.getenv("NVD_API_KEY", "")
 NVD_BASE_URL = "https://services.nvd.nist.gov/rest/json/cves/2.0"

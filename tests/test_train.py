@@ -43,7 +43,7 @@ def test_train_and_evaluate_smoke(tmp_path):
     train_df = make_synthetic_df(200, seed=1)
     test_df = make_synthetic_df(60, seed=2)
 
-    results = train_and_evaluate(train_df, test_df, save_dir=tmp_path)
+    results = train_and_evaluate(train_df, test_df, save_dir=tmp_path, track=False)
 
     assert "epss_baseline" in results
     for name in MODEL_NAMES:

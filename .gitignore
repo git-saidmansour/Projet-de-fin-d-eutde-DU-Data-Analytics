@@ -25,6 +25,10 @@ data/processed/*
 *.pkl
 *.joblib
 
+# MLflow tracking store
+mlruns/
+mlartifacts/
+
 # IDE / OS
 .vscode/
 .idea/
