@@ -61,8 +61,8 @@ python -m src.models.train
 - Split train/test **temporel** (les CVE les plus anciennes en train, les plus récentes en test — pas de split aléatoire)
 - Déséquilibre : `class_weight='balanced'` (RF, LogReg) et `scale_pos_weight` (XGBoost). **LightGBM est volontairement laissé sans repondération** — `is_unbalance=True` fait chuter son AUC de test de 0.95 à 0.69 sur ce ratio ~200:1, contrairement aux autres modèles
 - Suivi des expériences : MLflow (store local SQLite sous `mlruns/`) — `mlflow ui --backend-store-uri sqlite:///mlruns/mlflow.db`
-- Résultats détaillés et visualisations : [`notebooks/01_results_overview.ipynb`](notebooks/01_results_overview.ipynb)
-- Interprétabilité : SHAP (à venir)
+- Interprétabilité : SHAP (`src/models/interpret.py`) — importance globale et explication par CVE (`explain_cve`), réutilisées par le futur dashboard
+- Résultats détaillés et visualisations (EDA, courbes ROC/PR, SHAP) : [`notebooks/01_results_overview.ipynb`](notebooks/01_results_overview.ipynb)
 
 ### Résultats (test set, split temporel)
 
