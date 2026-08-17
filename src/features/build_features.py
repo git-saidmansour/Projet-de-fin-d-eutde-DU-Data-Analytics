@@ -21,6 +21,7 @@ SCOPE_MAP = {"UNCHANGED": 0, "CHANGED": 1}
 
 FEATURE_COLUMNS = [
     "cve_id",
+    "description",
     "published_date",
     "cvss_base_score",
     "cvss_impact_score",

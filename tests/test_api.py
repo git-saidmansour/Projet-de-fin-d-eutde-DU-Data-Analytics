@@ -14,6 +14,7 @@ def make_df(n: int, seed: int) -> pd.DataFrame:
     return pd.DataFrame(
         {
             "cve_id": [f"CVE-2024-{i:04d}" for i in range(n)],
+            "description": [f"Test description for CVE-2024-{i:04d}" for i in range(n)],
             "published_date": pd.to_datetime("2024-01-01", utc=True),
             "cvss_base_score": rng.uniform(0, 10, n),
             "cvss_impact_score": rng.uniform(0, 6, n),
@@ -90,6 +91,7 @@ def test_get_cve_detail_includes_shap_contributions():
     assert resp.status_code == 200
     body = resp.json()
     assert body["cve_id"] == cve_id
+    assert body["description"] == df.iloc[0]["description"]
     assert 0.0 <= body["predicted_probability"] <= 1.0
     assert len(body["top_contributions"]) > 0
 

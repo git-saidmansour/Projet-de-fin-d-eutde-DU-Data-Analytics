@@ -13,7 +13,6 @@ import pandas as pd
 from fastapi import FastAPI, HTTPException, Query
 from pydantic import BaseModel
 
-from src.collect.storage import get_connection, init_db
 from src.config import PROCESSED_DIR, get_logger
 from src.models.dataset import get_X_y, load_features
 from src.models.interpret import explain_cve
@@ -136,12 +135,7 @@ def get_cve(cve_id: str):
 
     explanation = explain_cve(cve_id, df, _state["pipeline"])
     summary = _row_to_summary(row.iloc[0])
-
-    conn = get_connection()
-    init_db(conn)
-    db_row = conn.execute("SELECT description FROM cves WHERE cve_id = ?", (cve_id,)).fetchone()
-    conn.close()
-    description = db_row["description"] if db_row else None
+    description = row.iloc[0]["description"] if pd.notna(row.iloc[0]["description"]) else None
 
     return CVEDetail(
         **summary.model_dump(),
