@@ -26,7 +26,10 @@ _SIMPLE_TYPES = (int, float, str, bool, type(None))
 
 
 def _init_mlflow() -> None:
-    mlflow.set_tracking_uri(f"file:{MLRUNS_DIR}")
+    # MLflow's plain filesystem store is in maintenance mode as of 2.x; use a local
+    # SQLite-backed store instead (still no server required).
+    MLRUNS_DIR.mkdir(parents=True, exist_ok=True)
+    mlflow.set_tracking_uri(f"sqlite:///{MLRUNS_DIR / 'mlflow.db'}")
     mlflow.set_experiment(EXPERIMENT_NAME)
 
 
